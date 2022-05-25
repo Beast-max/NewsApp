@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ import com.example.newsapp.Extensions.load
 import com.example.newsapp.R
 import com.example.newsapp.ViewModel.FavroiteViewModel
 
-class HeadLineAdapter(val viewmodel:FavroiteViewModel): ListAdapter<Article, HeadLineAdapter.ViewHolder>(object :DiffUtil.ItemCallback<Article>(){
+class HeadLineAdapter(val listner: onClick, val viewmodel:FavroiteViewModel): ListAdapter<Article, HeadLineAdapter.ViewHolder>(object :DiffUtil.ItemCallback<Article>(){
     override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
         return oldItem == newItem
     }
@@ -35,6 +36,7 @@ class HeadLineAdapter(val viewmodel:FavroiteViewModel): ListAdapter<Article, Hea
         val source = itemView.findViewById<TextView>(R.id.source)
         val image = itemView.findViewById<ImageView>(R.id.imageView)
         val fav = itemView.findViewById<ImageView>(R.id.fav)
+        val root = itemView.findViewById<CardView>(R.id.root)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadLineAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.breakingnews,parent,false)
@@ -44,7 +46,9 @@ class HeadLineAdapter(val viewmodel:FavroiteViewModel): ListAdapter<Article, Hea
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HeadLineAdapter.ViewHolder, position: Int) {
         val article = getItem(position)
-
+        holder.root.setOnClickListener {
+            listner.inclick(article.content,article.title,article.source.name,article.urlToImage)
+        }
         holder.disc.text = article.description
         val source = article.source.name
         holder.source.text = "Source:$source"
@@ -54,8 +58,19 @@ class HeadLineAdapter(val viewmodel:FavroiteViewModel): ListAdapter<Article, Hea
             val data = Model(null,article.source.name,article.title,article.description,article.urlToImage)
             holder.fav.setImageResource(R.drawable.ic_baseline_favorite_24dw)
             viewmodel.insert(data)
+            article.clicked = true
+        }
+        if(article.clicked)
+        {
+            holder.fav.setImageResource(R.drawable.ic_baseline_favorite_24dw)
+        }
+        else{
+            holder.fav.setImageResource(R.drawable.ic_baseline_favorite_24)
         }
 
+    }
+    interface onClick{
+        fun inclick(content:String,title:String,source:String,image:String)
     }
 
 

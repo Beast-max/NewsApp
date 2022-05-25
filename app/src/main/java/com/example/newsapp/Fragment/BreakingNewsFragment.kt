@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.newsapp.Adapter.EveryThingAdapter
 import com.example.newsapp.Adapter.HeadLineAdapter
 import com.example.newsapp.R
 import com.example.newsapp.ViewModel.FavroiteViewModel
@@ -24,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BreakingNewsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BreakingNewsFragment : Fragment() {
+class BreakingNewsFragment : Fragment(),HeadLineAdapter.onClick {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -52,7 +54,7 @@ class BreakingNewsFragment : Fragment() {
         favViewModel = ViewModelProvider(this).get(FavroiteViewModel::class.java)
         Rv = view!!.findViewById(R.id.breaking)
 
-        adapter = HeadLineAdapter(favViewModel)
+        adapter = HeadLineAdapter(this,favViewModel)
         Rv.adapter = adapter
         Rv.layoutManager = LinearLayoutManager(context)
         viewmodel.headlines.observe({lifecycle}){
@@ -80,5 +82,14 @@ class BreakingNewsFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun inclick(content: String, title: String, source: String, image: String) {
+        findNavController().navigate(R.id.action_hots_to_discription,Bundle().apply {
+            putString("content",content)
+            putString("title",title)
+            putString("source",source)
+            putString("image",image)
+        })
     }
 }

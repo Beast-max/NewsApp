@@ -9,7 +9,13 @@
         android:id="@+id/hots"
         android:name="com.example.newsapp.Fragment.BreakingNewsFragment"
         android:label="fragment_breaking_news"
-        tools:layout="@layout/fragment_breaking_news" />
+        tools:layout="@layout/fragment_breaking_news" >
+        <action
+            android:id="@+id/action_hots_to_discription"
+            app:destination="@id/discription" />
+
+
+    </fragment>
     <fragment
         android:id="@+id/favroite"
         android:name="com.example.newsapp.Fragment.FavroiteFragment"
@@ -19,5 +25,32 @@
         android:id="@+id/search"
         android:name="com.example.newsapp.Fragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_hots_to_discription"
+            app:destination="@id/discription" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/discription"
+        android:name="com.example.newsapp.DetailFragment"
+        android:label="fragment_Detail"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="content"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="source"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="image"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
 </navigation>

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.Adapter.EveryThingAdapter
@@ -32,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [SearchFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(),EveryThingAdapter.onClick {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -59,7 +60,7 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_search, container, false)
         Rv = view!!.findViewById(R.id.searchrecyclerview)
-        adapter = EveryThingAdapter(favViewModel)
+        adapter = EveryThingAdapter(this,favViewModel)
         Rv.adapter = adapter
         Rv.layoutManager = LinearLayoutManager(context)
             view.searchView.addTextChangedListener(object :TextWatcher{
@@ -112,5 +113,14 @@ class SearchFragment : Fragment() {
             }
         })
         viewModel.fatchEveryThing("fc44b959432d4237bef121343962c432",input)
+    }
+
+    override fun inclick(content: String, title: String, source: String, image: String) {
+        findNavController().navigate(R.id.action_hots_to_discription,Bundle().apply {
+            putString("content",content)
+            putString("title",title)
+            putString("source",source)
+            putString("image",image)
+        })
     }
 }
